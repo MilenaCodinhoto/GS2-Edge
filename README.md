@@ -11,6 +11,7 @@ Este projeto utiliza um ESP32 para monitorar o consumo elétrico a partir de um 
 
 ---
 ### Link do video <https://youtu.be/McqDoO7Afrc>
+### Link do Projeto <https://wokwi.com/projects/415095775982907393>
 
 ---
 
