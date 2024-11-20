@@ -1,18 +1,95 @@
-Sistema de Monitoramento de Consumo Elétrico com ESP32 e MQTT
-Este projeto utiliza o ESP32 com um potenciômetro para simular o consumo de energia em uma residência ou empresa. Os dados de consumo são enviados para um broker MQTT (ex: test.mosquitto.org) e podem ser monitorados em tempo real.
+# Monitoramento de Consumo com ESP32 e MQTT
 
-Funcionalidades
-Leitura de Potenciômetro: O potenciômetro conectado ao pino analógico do ESP32 simula o consumo de energia.
-Cálculo de Potência: O código calcula a potência instantânea e a média do consumo em watts (W) com base na leitura do potenciômetro.
-Classificação de Consumo: O sistema classifica o consumo em três categorias: Baixo, Moderado e Alto.
-Envio para MQTT: O consumo médio e seu estado (Baixo, Moderado, Alto) são enviados para um broker MQTT para monitoramento remoto.
-Materiais Necessários
-ESP32 (Placa de Desenvolvimento)
-Potenciômetro
-Broker MQTT (ex: test.mosquitto.org)
-Bibliotecas Requeridas
-WiFi.h: Para conectar o ESP32 à rede Wi-Fi.
-PubSubClient.h: Para a comunicação com o broker MQTT.
-Configurações
-Wi-Fi
-Altere as credenciais Wi-Fi para se conectar à sua rede local:
+Este projeto utiliza um ESP32 para monitorar o consumo elétrico a partir de um potenciômetro, publicando as informações em um broker MQTT. Ele também classifica o consumo em "Baixo", "Moderado" ou "Alto" com base em limites predefinidos. Os dados são enviados ao tópico MQTT configurado, permitindo sua integração em sistemas de IoT.
+
+---
+
+## Funcionalidades
+
+- **Conexão Wi-Fi**: O ESP32 se conecta à rede Wi-Fi para comunicação com o broker MQTT.
+- **Leitura do potenciômetro**: Mede a corrente elétrica simulada e calcula a potência instantânea.
+- **Cálculo de consumo médio**: Calcula o consumo médio baseado em leituras acumuladas.
+- **Classificação do consumo**:
+  - **Baixo**: Abaixo de 50 W.
+  - **Moderado**: Entre 50 W e 150 W.
+  - **Alto**: Acima de 150 W.
+- **Publicação MQTT**: Envia os dados (consumo médio e classificação) para o broker MQTT no formato JSON.
+
+---
+
+## Requisitos
+
+- **Hardware**:
+  - ESP32
+  - Potenciômetro conectado ao pino analógico (Pino `34`).
+
+- **Software**:
+  - Arduino IDE com as bibliotecas:
+    - [WiFi](https://www.arduino.cc/reference/en/libraries/wifi/)
+    - [PubSubClient](https://pubsubclient.knolleary.net/)
+
+---
+
+## Configuração
+
+### Wi-Fi
+Edite as linhas abaixo para configurar sua rede Wi-Fi:
+```cpp
+const char* ssid = "SEU_SSID";
+const char* password = "SUA_SENHA";
+```
+
+### MQTT
+Defina o servidor e o tópico MQTT:
+```cpp
+const char* mqttServer = "test.mosquitto.org";
+const int mqttPort = 1883;
+const char* mqttTopic = "casa/consumo_potenciometro";
+```
+
+---
+
+## Funcionamento do Código
+
+1. **Setup**:
+   - Conecta ao Wi-Fi e inicializa o cliente MQTT.
+   
+2. **Loop Principal**:
+   - Verifica a conexão Wi-Fi e MQTT.
+   - Lê a entrada analógica do potenciômetro.
+   - Calcula a potência instantânea e o consumo médio.
+   - Classifica o estado do consumo.
+   - Publica os dados no broker MQTT.
+
+3. **Reconexão Automática**:
+   - Reconfigura o Wi-Fi e reconecta ao broker MQTT se a conexão for perdida.
+
+---
+
+## Formato dos Dados Enviados
+
+Os dados são enviados ao tópico configurado em formato JSON:
+```json
+{
+  "Consumo_Medio": 120.50,
+  "Estado": "Moderado"
+}
+```
+
+---
+
+## Personalização
+
+- **Limites de Classificação**: Ajuste os valores conforme necessário:
+  ```cpp
+  const float limiteBaixo = 50.0;   
+  const float limiteModerado = 150.0; 
+  const float limiteAlto = 300.0;
+  ```
+- **Frequência de Atualização**: Altere o tempo entre leituras ajustando `delay(1000)` no `loop()`.
+
+---
+
+## Licença
+
+Este projeto está disponível para uso e modificação livremente. Certifique-se de citar o autor original ao compartilhar.
