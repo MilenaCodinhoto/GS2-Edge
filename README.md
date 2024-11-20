@@ -4,6 +4,13 @@ Este projeto utiliza um ESP32 para monitorar o consumo elétrico a partir de um 
 
 ---
 
+## Integrantes
+- Milena Codinhoto
+- Evellyn Valencia
+- Carolina Ferraz
+
+---
+
 ## Funcionalidades
 
 - **Conexão Wi-Fi**: O ESP32 se conecta à rede Wi-Fi para comunicação com o broker MQTT.
@@ -92,4 +99,4 @@ Os dados são enviados ao tópico configurado em formato JSON:
 
 ## Licença
 
-Este projeto está disponível para uso e modificação livremente. Certifique-se de citar o autor original ao compartilhar.
+Este é um projeto acadêmico.
